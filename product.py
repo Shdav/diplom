@@ -47,10 +47,11 @@ def product_page():
 
         with st.expander('Похожие товары', expanded=False):
             for id in recommended_toys:
-                product_name = toys.loc[toys['id'] == id, 'product_name'].iloc[0]
-                if st.button(product_name, key=id):
-                    set_query(id, search_query, page, category_query, manufacturer_query, is_available_query, rating_query)
-                    st.rerun()
+                product_name = toys.loc[toys['id'] == id, 'product_name'].values[0] if toys['id'].eq(id).any() else None
+                if product_name is not None:
+                    if st.button(product_name, key=id):
+                        set_query(id, search_query, page, category_query, manufacturer_query, is_available_query, rating_query)
+                        st.rerun()
     else:
         st.write('Товар не найден')
 
